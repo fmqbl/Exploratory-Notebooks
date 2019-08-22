@@ -44,6 +44,24 @@ class downloader:
         self.tickButton = "//*[@id='flatGroup']/li[3]/div/div[4]/img"
         self.searchButton = "//*[@id='launchSearch']/img"
         self.tickAtBottomMenu = "//*[@id='callForConsoButton']/img"
+
+        #before selection datarow
+        self.totalPieces = "//*[@id='globalDataLeft']/div/table/tbody/tr/td[3]/ul/li/label"
+        self.totalCtn = "//*[@id='globalDataLeft']/div/table/tbody/tr/td[4]/ul/li/label"
+        self.netWeight = "//*[@id='globalDataLeft']/div/table/tbody/tr/td[6]/ul/li/label"
+        self.grossWeight = "//*[@id='globalDataLeft']/div/table/tbody/tr/td[7]/ul/li/label"
+        self.totalVolume = "//*[@id='globalDataLeft']/div/table/tbody/tr/td[8]/ul/li/label"
+       
+        #checkbox
+        self.selectAllCheck = "//*[@id='mainAsCheckBox']"
+        
+        #Afterselection data row
+        self.selectedPieces = "//*[@id='selectedDataLeft']/div/table/tbody/tr/td[3]/ul/li/label"
+        self.selectedCtn = "//*[@id='selectedDataLeft']/div/table/tbody/tr/td[4]/ul/li/label"
+        self.selectedNetWeight = "//*[@id='selectedDataLeft']/div/table/tbody/tr/td[6]/ul/li/label"
+        self.selectedGrossWeight = "//*[@id='selectedDataLeft']/div/table/tbody/tr/td[7]/ul/li/label"
+        self.selectedTotalVolume = "//*[@id='selectedDataLeft']/div/table/tbody/tr/td[8]/ul/li/label"
+
         #self.selectAllCheck = 
 
         # input settings
@@ -136,6 +154,21 @@ class downloader:
             if total_wait > 1: 
                 self.wait_for_class_to_be_available(browser,elementXpath, total_wait)
 
+    def wait_for_xpath_to_present(self,browser,elementXpath, total_wait=100):
+        #pdb.set_trace()
+        try:
+            element = WebDriverWait(browser, 15).until(EC.presence_of_element_located((By.XPATH, elementXpath)))
+            return element.text
+        except Exception as e:
+            print("Waiting for element to be Clickable")
+            #print(e)
+            total_wait = total_wait - 1
+            time.sleep(1)
+            if total_wait > 1: 
+                self.wait_for_class_to_be_available(browser,elementXpath, total_wait)
+
+
+
     def asOfConsolidation(self):
         
         #pdb.set_trace()
@@ -169,7 +202,12 @@ class downloader:
 
         self.wait_for_class_to_be_available(self.browser,self.searchButton)
 
+        self.wait_for_class_to_be_available(self.browser,self.selectAllCheck)
         
+        givenTotalPieces = self.wait_for_xpath_to_present(self.browser,self.selectedPieces)
+
+        print(givenTotalPieces)
+        print(int(givenTotalPieces))
 
 
         #4
