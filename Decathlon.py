@@ -70,7 +70,7 @@ class downloader:
         #self.settings.add_argument('--browser.helperApps.neverAsk.saveToDisk=text/csv')
         #self.settings.add_experimental_option("prefs",profile)
 
-        self.bar.next()
+        #self.bar.next()
             
         
     def loadBrowser(self):
@@ -84,7 +84,7 @@ class downloader:
             self.browser = webdriver.Chrome(chrome_options=self.settings, executable_path=r"D:\chromedriver.exe")
             self.browser.maximize_window()
             self.logger.info("Page setup complete will now go to the URL")
-            self.bar = next()
+            #self.bar = next()
 
         except Exception as e:
             self.logger.critical("Unable to load chrome driver. " + str(e))
@@ -114,7 +114,7 @@ class downloader:
         submitButton.click()
 
         #3
-        self.bar.next()
+        #self.bar.next()
 
         #pdb.set_trace()
         self.asOfConsolidation()
@@ -142,11 +142,11 @@ class downloader:
 
         #clicking the consolidation button
 
-        
+        time.sleep(2)
         self.wait_for_class_to_be_available(self.browser,self.consolButton)
 
         #clicking the filterOption 
-        #time.sleep(5)
+        time.sleep(2)
         self.wait_for_class_to_be_available(self.browser,self.filterButton)
 
         enterInput = self.browser.find_element_by_xpath(self.poEntryInput)
@@ -159,14 +159,17 @@ class downloader:
         #tickButton.click()
 
         #4
-        self.bar.next()
+        #self.bar.next()
 
     def iterateOverInput(self):
         
         #print(self.inputs)
 
-        self.orderNumbers = str(self.inputs['ORDER NUMBER'].values)
-
+        self.orderNumbers = self.inputs['ORDER NUMBER'].values.tolist()
+        print(self.orderNumbers)
+        
+        self.orderNumbers = ' '.join(str(e) for e in self.orderNumbers)
+        
 
 if __name__ == '__main__':
     obj = downloader()
