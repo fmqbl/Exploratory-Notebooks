@@ -35,15 +35,21 @@ class downloader:
         
         self.logger.addHandler(ch)
         self.logger.propagate = False
-        self.bar = Bar('Processing', max=10)
+        #self.bar = Bar('Processing', max=10)
 
         self.consolidationDiv = "//*[@id='menu_li_4']"
         self.consolButton = "//*[@id='actions']/li[3]/img"
         self.filterButton = "//*[@id='filters-action-full']"
         self.poEntryInput = "//*[@id='flatGroup']/li[3]/div/div[3]/input"
 
-        self.poNumbers = ['4512771749','4512651062','4512324819','4512491742','4512597389']
+        # input settings
+        self.inputFile = r"D:\CLR.xlsx"
+        self.inputs = pd.read_excel(self.inputFile)
+        #print(self.inputs)
         
+        #Variables
+        self.orderNumbers = ''
+
         # application setting
         
         self.url = "https://cape-asia.decathlon.net/capetm/index.jsp"
@@ -144,15 +150,25 @@ class downloader:
         self.wait_for_class_to_be_available(self.browser,self.filterButton)
 
         enterInput = self.browser.find_element_by_xpath(self.poEntryInput)
-        enterInput.send_keys(' '.join(self.poNumbers))
+        #enterInput.send_keys(' '.join(self.poNumbers))
+
+        enterInput.send_keys(self.orderNumbers)
 
         #Click the tickButton
         tickButton = self.browser.find_element_by_xpath("//*[@id='flatGroup']/li[3]/div/div[4]/img")
         #tickButton.click()
 
-        self.logger.info("so far so good")
+        #4
+        self.bar.next()
+
+    def iterateOverInput(self):
+        
+        #print(self.inputs)
+
+        self.orderNumbers = str(self.inputs['ORDER NUMBER'].values)
 
 
 if __name__ == '__main__':
     obj = downloader()
+    obj.iterateOverInput()
     obj.loadBrowser()
