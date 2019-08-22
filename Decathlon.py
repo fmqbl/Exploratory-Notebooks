@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -44,13 +45,20 @@ class downloader:
         self.tickButton = "//*[@id='flatGroup']/li[3]/div/div[4]/img"
         self.searchButton = "//*[@id='launchSearch']/img"
         self.tickAtBottomMenu = "//*[@id='callForConsoButton']/img"
+        
+        #from input
+        self.totalPieces = ""
+        self.totalCtn = ""
+        self.netWeight = ""
+        self.grossWeight = ""
+        self.totalVolume = ""
 
         #before selection datarow
-        self.totalPieces = "//*[@id='globalDataLeft']/div/table/tbody/tr/td[3]/ul/li/label"
-        self.totalCtn = "//*[@id='globalDataLeft']/div/table/tbody/tr/td[4]/ul/li/label"
-        self.netWeight = "//*[@id='globalDataLeft']/div/table/tbody/tr/td[6]/ul/li/label"
-        self.grossWeight = "//*[@id='globalDataLeft']/div/table/tbody/tr/td[7]/ul/li/label"
-        self.totalVolume = "//*[@id='globalDataLeft']/div/table/tbody/tr/td[8]/ul/li/label"
+        self.totalPiecesXPath = "//*[@id='globalDataLeft']/div/table/tbody/tr/td[3]/ul/li/label"
+        self.totalCtnXPath = "//*[@id='globalDataLeft']/div/table/tbody/tr/td[4]/ul/li/label"
+        self.netWeightXPath = "//*[@id='globalDataLeft']/div/table/tbody/tr/td[6]/ul/li/label"
+        self.grossWeightXPath = "//*[@id='globalDataLeft']/div/table/tbody/tr/td[7]/ul/li/label"
+        self.totalVolumeXPath = "//*[@id='globalDataLeft']/div/table/tbody/tr/td[8]/ul/li/label"
        
         #checkbox
         self.selectAllCheck = "//*[@id='mainAsCheckBox']"
@@ -207,6 +215,11 @@ class downloader:
         time.sleep(5)
 
         givenTotalPieces = self.wait_for_xpath_to_present(self.browser,self.selectedPieces)
+        givenTotalCtn = self.wait_for_xpath_to_present(self.browser,self.selectedCtn)
+        givenNetWeight = self.wait_for_xpath_to_present(self.browser,self.selectedNetWeight)
+        givenGrossWeight = self.wait_for_xpath_to_present(self.browser,self.selectedGrossWeight)
+        givenTotalVolume = self.wait_for_xpath_to_present(self.browser,self.selectedTotalVolume)
+
 
         #print(self.browser.find_element_by_xpath("//*[@id='selectedDataLeft']/div/table/tbody/tr/td[3]/ul/li/label").get_attribute('innerHTML'))
 
@@ -216,6 +229,11 @@ class downloader:
 
         print(givenTotalPieces)
         print(float(givenTotalPieces))
+        print(givenTotalCtn)
+        print(givenNetWeight)
+        print(givenGrossWeight)
+        print(givenTotalVolume)
+
 
 
         #4
@@ -230,8 +248,12 @@ class downloader:
         
         self.orderNumbers = ' '.join(str(e) for e in self.orderNumbers)
         
+        self.totalPieces = self.inputs['PIECES PER PO'].sum()
+
+        print(self.totalPieces)
+        
 
 if __name__ == '__main__':
     obj = downloader()
     obj.iterateOverInput()
-    obj.loadBrowser()
+    #obj.loadBrowser()
