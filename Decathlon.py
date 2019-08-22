@@ -204,10 +204,16 @@ class downloader:
 
         self.wait_for_class_to_be_available(self.browser,self.selectAllCheck)
         
-        givenTotalPieces = self.wait_for_xpath_to_present(self.browser,self.selectedPieces)
+        #givenTotalPieces = self.wait_for_xpath_to_present(self.browser,self.selectedPieces)
 
-        print(givenTotalPieces)
-        print(int(givenTotalPieces))
+        print(self.browser.find_element_by_xpath("//*[@id='selectedDataLeft']/div/table/tbody/tr/td[3]/ul/li/label").get_attribute('innerHTML'))
+
+        #lbl = li.find_element_by_tag_name('label')
+
+        #print(lbl.text)
+
+        #print(givenTotalPieces)
+        #print(int(givenTotalPieces))
 
 
         #4
