@@ -41,6 +41,10 @@ class downloader:
         self.consolButton = "//*[@id='actions']/li[3]/img"
         self.filterButton = "//*[@id='filters-action-full']"
         self.poEntryInput = "//*[@id='flatGroup']/li[3]/div/div[3]/input"
+        self.tickButton = "//*[@id='flatGroup']/li[3]/div/div[4]/img"
+        self.searchButton = "//*[@id='launchSearch']/img"
+        self.tickAtBottomMenu = "//*[@id='callForConsoButton']/img"
+        #self.selectAllCheck = 
 
         # input settings
         self.inputFile = r"D:\CLR.xlsx"
@@ -120,18 +124,17 @@ class downloader:
         self.asOfConsolidation()
     #added comments
     def wait_for_class_to_be_available(self,browser,elementXpath, total_wait=100):
-        pdb.set_trace()
+        #pdb.set_trace()
         try:
-            element = WebDriverWait(self.browser, 15).until(
-                EC.element_to_be_clickable((By.XPATH, elementXpath)))
+            element = WebDriverWait(browser, 15).until(EC.element_to_be_clickable((By.XPATH, elementXpath)))
             element.click()
         except Exception as e:
-            print("Wait Timed out")
-            print(e)
-            total_wait -= 1
+            print("Waiting for element to be Clickable")
+            #print(e)
+            total_wait = total_wait - 1
             time.sleep(1)
             if total_wait > 1: 
-                self.wait_for_class_to_be_available(self.browser,elementXpath, total_wait)
+                self.wait_for_class_to_be_available(browser,elementXpath, total_wait)
 
     def asOfConsolidation(self):
         
@@ -156,8 +159,18 @@ class downloader:
         enterInput.send_keys(self.orderNumbers)
 
         #Click the tickButton
-        tickButton = self.browser.find_element_by_xpath("//*[@id='flatGroup']/li[3]/div/div[4]/img")
+
+        self.wait_for_class_to_be_available(self.browser,self.tickButton)
+
+        #self.browser.find_element_by_xpath("//*[@id='flatGroup']/li[3]/div/div[4]/img")
         #tickButton.click()
+
+        #click Search Button
+
+        self.wait_for_class_to_be_available(self.browser,self.searchButton)
+
+        
+
 
         #4
         #self.bar.next()
