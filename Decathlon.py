@@ -35,6 +35,7 @@ class downloader:
         
         self.logger.addHandler(ch)
         self.logger.propagate = False
+        self.bar = Bar('Processing', max=10)
 
         self.consolidationDiv = "//*[@id='menu_li_4']"
         self.consolButton = "//*[@id='actions']/li[3]/img"
@@ -62,6 +63,8 @@ class downloader:
         #self.settings.add_argument('--browser.download.folderList=2')
         #self.settings.add_argument('--browser.helperApps.neverAsk.saveToDisk=text/csv')
         #self.settings.add_experimental_option("prefs",profile)
+
+        self.bar.next()
             
         
     def loadBrowser(self):
@@ -75,6 +78,7 @@ class downloader:
             self.browser = webdriver.Chrome(chrome_options=self.settings, executable_path=r"D:\chromedriver.exe")
             self.browser.maximize_window()
             self.logger.info("Page setup complete will now go to the URL")
+            self.bar = next()
 
         except Exception as e:
             self.logger.critical("Unable to load chrome driver. " + str(e))
@@ -88,6 +92,8 @@ class downloader:
         try:
             myElem = WebDriverWait(self.browser, delay).until(EC.presence_of_element_located((By.ID, 'username')))
             self.logger.info("Page is ready!")
+            
+            
         except TimeoutException:
             self.logger.info("Loading took too much time! Exiting now")
             sys.exit(0)
@@ -100,6 +106,9 @@ class downloader:
 
         submitButton = self.browser.find_element_by_xpath("/html/body/div[1]/div/form/div[4]/button")
         submitButton.click()
+
+        #3
+        self.bar.next()
 
         #pdb.set_trace()
         self.asOfConsolidation()
