@@ -228,13 +228,55 @@ class downloader:
         #print(lbl.text)
 
         print(givenTotalPieces)
-        print(float(givenTotalPieces))
         print(givenTotalCtn)
         print(givenNetWeight)
         print(givenGrossWeight)
         print(givenTotalVolume)
 
+        print(self.totalPieces)
+        print(self.totalCtn)
+        print(self.netWeight)
+        print(self.grossWeight)
+        print(self.totalVolume)
 
+        print(type(givenTotalCtn))
+        print(type(self.totalCtn))
+
+        if (givenTotalPieces.strip() == self.totalPieces.strip()) and (givenTotalCtn.strip() == self.totalCtn.strip()) and (givenNetWeight.strip() == self.netWeight.strip()) and (givenGrossWeight.strip() == self.grossWeight.strip()) and (givenTotalVolume.strip() == self.totalVolume.strip()):
+            print('GG WP EZ PZ')
+
+            self.wait_for_class_to_be_available(self.browser,self.tickAtBottomMenu)
+
+            self.wait_for_class_to_be_available(self.browser,self.consolidationDiv)
+
+            self.wait_for_class_to_be_available(self.browser,self.filterButton)
+
+            enterInput = self.browser.find_element_by_xpath(self.poEntryInput)
+            enterInput.send_keys(self.orderNumbers)
+
+
+            self.wait_for_class_to_be_available(self.browser,self.tickButton)
+        
+            self.wait_for_class_to_be_available(self.browser,self.searchButton)
+
+            self.wait_for_class_to_be_available(self.browser,self.selectAllCheck)
+
+            time.sleep(5)
+
+            givenTotalPieces = self.wait_for_xpath_to_present(self.browser,self.totalPiecesXPath)
+            givenTotalCtn = self.wait_for_xpath_to_present(self.browser,self.totalCtnXPath)
+            givenNetWeight = self.wait_for_xpath_to_present(self.browser,self.netWeightXPath)
+            givenGrossWeight = self.wait_for_xpath_to_present(self.browser,self.grossWeightXPath)
+            givenTotalVolume = self.wait_for_xpath_to_present(self.browser,self.totalVolumeXPath)
+
+            selectedTotalPieces = self.wait_for_xpath_to_present(self.browser,self.selectedPieces)
+            selectedTotalCtn = self.wait_for_xpath_to_present(self.browser,self.selectedCtn)
+            selectedNetWeight = self.wait_for_xpath_to_present(self.browser,self.selectedNetWeight)
+            selectedGrossWeight = self.wait_for_xpath_to_present(self.browser,self.selectedGrossWeight)
+            selectedTotalVolume = self.wait_for_xpath_to_present(self.browser,self.selectedTotalVolume)
+
+            if (givenTotalPieces.strip() == selectedTotalPieces.strip() and givenTotalCtn.strip() == selectedTotalCtn.strip()):
+                print('GG WP EZ PZ')
 
         #4
         #self.bar.next()
@@ -249,11 +291,27 @@ class downloader:
         self.orderNumbers = ' '.join(str(e) for e in self.orderNumbers)
         
         self.totalPieces = self.inputs['PIECES PER PO'].sum()
+        self.totalPieces = "{:.2f}".format(self.totalPieces)
+
+        self.netWeight = self.inputs['NET WEIGHT'].sum()
+        self.netWeight = "{:.2f}".format(self.netWeight)
+
+        self.totalCtn = str(self.inputs['CARTONS'].sum())
+
+        self.grossWeight = self.inputs['GROSS WEIGTH'].sum()
+        self.grossWeight = "{:.2f}".format(self.grossWeight)
+
+        self.totalVolume = self.inputs['VOLUME'].sum()
+        self.totalVolume = "{:.3f}".format(self.totalVolume)
 
         print(self.totalPieces)
-        
+        print(self.netWeight)
+        print(str(self.totalCtn))
+        print(self.grossWeight)
+        print(self.totalVolume)
+
 
 if __name__ == '__main__':
     obj = downloader()
     obj.iterateOverInput()
-    #obj.loadBrowser()
+    obj.loadBrowser()
