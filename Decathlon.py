@@ -13,6 +13,8 @@ import os
 import pdb
 import time
 import sys
+from progress.bar import Bar
+
 
 #N.Sathishkumar@expeditors.com
 #123456
