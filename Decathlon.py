@@ -118,7 +118,7 @@ class downloader:
 
         #pdb.set_trace()
         self.asOfConsolidation()
-
+    #added comments
     def wait_for_class_to_be_available(self,browser,elementXpath, total_wait=100):
         pdb.set_trace()
         try:
