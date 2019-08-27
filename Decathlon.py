@@ -119,8 +119,7 @@ class downloader:
         except Exception as e:
             self.logger.critical("Unable to load chrome driver. " + str(e))
         
-        #Entering the URLc
-
+        #Entering the URL for validation of things 
         
         self.browser.get(self.url)
 
@@ -176,7 +175,7 @@ class downloader:
                 self.wait_for_class_to_be_available(browser,elementXpath, total_wait)
 
 
-
+    
     def asOfConsolidation(self):
         
         #pdb.set_trace()
@@ -196,7 +195,7 @@ class downloader:
 
         enterInput = self.browser.find_element_by_xpath(self.poEntryInput)
         #enterInput.send_keys(' '.join(self.poNumbers))
-
+        
         enterInput.send_keys(self.orderNumbers)
 
         #Click the tickButton
