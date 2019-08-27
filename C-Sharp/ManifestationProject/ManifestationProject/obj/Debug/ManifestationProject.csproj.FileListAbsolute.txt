@@ -1,0 +1,16 @@
+C:\Users\lhe-faisalm\source\repos\ManifestationProject\ManifestationProject\bin\Debug\ManifestationProject.exe.config
+C:\Users\lhe-faisalm\source\repos\ManifestationProject\ManifestationProject\bin\Debug\ManifestationProject.exe
+C:\Users\lhe-faisalm\source\repos\ManifestationProject\ManifestationProject\bin\Debug\ManifestationProject.pdb
+C:\Users\lhe-faisalm\source\repos\ManifestationProject\ManifestationProject\bin\Debug\IBM.Data.DB2.dll
+C:\Users\lhe-faisalm\source\repos\ManifestationProject\ManifestationProject\bin\Debug\MetroFramework.Design.dll
+C:\Users\lhe-faisalm\source\repos\ManifestationProject\ManifestationProject\bin\Debug\MetroFramework.dll
+C:\Users\lhe-faisalm\source\repos\ManifestationProject\ManifestationProject\bin\Debug\MetroFramework.Fonts.dll
+C:\Users\lhe-faisalm\source\repos\ManifestationProject\ManifestationProject\obj\Debug\ManifestationProject.csprojAssemblyReference.cache
+C:\Users\lhe-faisalm\source\repos\ManifestationProject\ManifestationProject\obj\Debug\ManifestationProject.Form1.resources
+C:\Users\lhe-faisalm\source\repos\ManifestationProject\ManifestationProject\obj\Debug\ManifestationProject.Properties.Resources.resources
+C:\Users\lhe-faisalm\source\repos\ManifestationProject\ManifestationProject\obj\Debug\ManifestationProject.csproj.GenerateResource.cache
+C:\Users\lhe-faisalm\source\repos\ManifestationProject\ManifestationProject\obj\Debug\ManifestationProject.csproj.CoreCompileInputs.cache
+C:\Users\lhe-faisalm\source\repos\ManifestationProject\ManifestationProject\obj\Debug\ManifestationProject.csproj.CopyComplete
+C:\Users\lhe-faisalm\source\repos\ManifestationProject\ManifestationProject\obj\Debug\ManifestationProject.exe
+C:\Users\lhe-faisalm\source\repos\ManifestationProject\ManifestationProject\obj\Debug\ManifestationProject.pdb
+C:\Users\lhe-faisalm\source\repos\ManifestationProject\ManifestationProject\obj\Debug\ManifestationProject.csproj.ResolveComReference.cache
