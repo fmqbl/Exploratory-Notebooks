@@ -1,0 +1,16 @@
+C:\Users\lhe-faisalm\source\repos\GetHouseData\GetHouseData\bin\x86\Debug\GetHouseData.exe.config
+C:\Users\lhe-faisalm\source\repos\GetHouseData\GetHouseData\bin\x86\Debug\GetHouseData.exe
+C:\Users\lhe-faisalm\source\repos\GetHouseData\GetHouseData\bin\x86\Debug\GetHouseData.pdb
+C:\Users\lhe-faisalm\source\repos\GetHouseData\GetHouseData\bin\x86\Debug\IBM.Data.DB2.dll
+C:\Users\lhe-faisalm\source\repos\GetHouseData\GetHouseData\bin\x86\Debug\MetroFramework.Design.dll
+C:\Users\lhe-faisalm\source\repos\GetHouseData\GetHouseData\bin\x86\Debug\MetroFramework.dll
+C:\Users\lhe-faisalm\source\repos\GetHouseData\GetHouseData\bin\x86\Debug\MetroFramework.Fonts.dll
+C:\Users\lhe-faisalm\source\repos\GetHouseData\GetHouseData\obj\x86\Debug\GetHouseData.csprojAssemblyReference.cache
+C:\Users\lhe-faisalm\source\repos\GetHouseData\GetHouseData\obj\x86\Debug\GetHouseData.csproj.ResolveComReference.cache
+C:\Users\lhe-faisalm\source\repos\GetHouseData\GetHouseData\obj\x86\Debug\GetHouseData.Form1.resources
+C:\Users\lhe-faisalm\source\repos\GetHouseData\GetHouseData\obj\x86\Debug\GetHouseData.Properties.Resources.resources
+C:\Users\lhe-faisalm\source\repos\GetHouseData\GetHouseData\obj\x86\Debug\GetHouseData.csproj.GenerateResource.cache
+C:\Users\lhe-faisalm\source\repos\GetHouseData\GetHouseData\obj\x86\Debug\GetHouseData.csproj.CoreCompileInputs.cache
+C:\Users\lhe-faisalm\source\repos\GetHouseData\GetHouseData\obj\x86\Debug\GetHouseData.csproj.CopyComplete
+C:\Users\lhe-faisalm\source\repos\GetHouseData\GetHouseData\obj\x86\Debug\GetHouseData.exe
+C:\Users\lhe-faisalm\source\repos\GetHouseData\GetHouseData\obj\x86\Debug\GetHouseData.pdb
