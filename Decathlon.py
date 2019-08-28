@@ -225,10 +225,10 @@ class downloader:
         #lbl = li.find_element_by_tag_name('label')
 
         #print(lbl.text)
-        givenTotalPieces = "{:.2f}".format(givenTotalPieces)
-        givenNetWeight = "{:.1f}".format(givenNetWeight)
-        givenGrossWeight = "{:.1f}".format(givenGrossWeight)
-        givenTotalVolume = "{:.1f}".format(givenTotalVolume)
+        givenTotalPieces = "{:.2f}".format(float(givenTotalPieces))
+        givenNetWeight = "{:.1f}".format(float(givenNetWeight))
+        givenGrossWeight = "{:.1f}".format(float(givenGrossWeight))
+        givenTotalVolume = "{:.1f}".format(float(givenTotalVolume))
 
         print(givenTotalPieces)
         print(givenTotalCtn)
@@ -317,4 +317,4 @@ class downloader:
 if __name__ == '__main__':
     obj = downloader()
     obj.iterateOverInput()
-    #obj.loadBrowser()
+    obj.loadBrowser()
