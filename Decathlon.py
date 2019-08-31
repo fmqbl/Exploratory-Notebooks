@@ -8,6 +8,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.ui import Select
 import logging
 import traceback
 import os
@@ -45,6 +46,8 @@ class downloader:
         self.tickButton = "//*[@id='flatGroup']/li[3]/div/div[4]/img"
         self.searchButton = "//*[@id='launchSearch']/img"
         self.tickAtBottomMenu = "//*[@id='callForConsoButton']/img"
+        self.containerButton = "//*[@id='rightPartButtonAction']/a[1]/img"
+        self.createContainer = "//*[@id='callContainerForm']/div[11]/button/span/em"
         
         #from input
         self.totalPieces = ""
@@ -279,7 +282,38 @@ class downloader:
             selectedTotalVolume = self.wait_for_xpath_to_present(self.browser,self.selectedTotalVolume)
 
             if (givenTotalPieces.strip() == selectedTotalPieces.strip() and givenTotalCtn.strip() == selectedTotalCtn.strip()):
-                print('GG WP EZ PZ')
+                
+                print('Final GG WP')
+                #Clicking Container
+
+                self.wait_for_class_to_be_available(self.browser,self.containerButton)
+                #clicking create container button
+
+                self.wait_for_class_to_be_available(self.browser, self.createContainer)
+
+                elementFind = WebDriverWait(self.browser, 100).until(EC.presence_of_element_located((By.NAME, 'treTransportMode')))
+                element = self.browser.find_element_by_xpath("//select[@name='treTransportMode']")
+                all_options = element.find_elements_by_tag_name("option")
+                for option in all_options:
+                    if (option.get_attribute("value") == 'SEA'):
+                        option.click()
+                
+
+                container_textBox = WebDriverWait(self.browser, 100).until(EC.presence_of_element_located((By.NAME, 'treContainorNumber')))
+                container_textBox.send_keys(self.containerNumber)
+
+                seal_textBox = WebDriverWait(self.browser, 100).until(EC.presence_of_element_located((By.NAME, 'trePlombNumber')))
+                seal_textBox.send_keys(self.sealNumber)
+
+                checkBoxItem = WebDriverWait(self.browser, 100).until(EC.presence_of_element_located((By.NAME, 'treIdSelected')))
+                self.browser.find_element_by_name('treIdSelected').click()
+
+                self.wait_for_class_to_be_available(self.browser,"//*[@id='rightPartButtonAction']/a[3]/img")
+                
+                print('Heavy')
+
+
+
 
         #4
         #self.bar.next()
@@ -306,12 +340,27 @@ class downloader:
 
         self.totalVolume = self.inputs['VOLUME'].sum()
         self.totalVolume = "{:.1f}".format(self.totalVolume)
+        
+        self.containerNumber = self.inputs['CONTAINER NUMBER'][0]
+        self.containerSize = self.inputs['CONTAINER SIZE'][0]
+        self.trType = self.inputs['TR TYPE'][0]
+        self.sealNumber = self.inputs['SEAL NUMBER'][0]
 
         print(self.totalPieces)
         print(self.netWeight)
         print(str(self.totalCtn))
         print(self.grossWeight)
         print(self.totalVolume)
+
+        print('///////////////////')
+
+        print(self.inputs['CONTAINER NUMBER'][0])
+        print(self.inputs['SEAL NUMBER'][0])
+        print(self.inputs['TR TYPE'][0])
+        print(self.inputs['CONTAINER SIZE'][0])
+        pathForDropdown = "//select[@id='treTransportModeASIA_CNT1283764']/option[contains(text(),'"+  self.trType +"')]"
+        print(pathForDropdown)
+        
 
 
 if __name__ == '__main__':
