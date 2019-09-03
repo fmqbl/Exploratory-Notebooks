@@ -313,8 +313,6 @@ class downloader:
                 print('Heavy')
 
 
-
-
         #4
         #self.bar.next()
 
