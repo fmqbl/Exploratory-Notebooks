@@ -53,10 +53,13 @@ namespace GetHouseData
                 hdr.FLIGHT_NUM_AWB_1,
                 hdr.HNDL_INFO_AWB_1,
                 hdr.HNDL_INFO_AWB_2,
-                SUBSTR(xmlserialize(xmlagg(xmltext(CONCAT( '!',concat(concat(itm.REMARKS_AWB_PFX,' '),itm.REMARKS_AWB)))) as VARCHAR(1024)), 3)
+                SUBSTR(xmlserialize(xmlagg(xmltext(CONCAT( '!',concat(concat(itm.REMARKS_AWB_PFX,' '),itm.REMARKS_AWB)))) as VARCHAR(1024)), 3),
+                sl.MAWB_BL_NO
+                                    
 
                 From
                 EXPORT.SHPMNT_HDR sh
+                inner join IASDB.SHIP_LOG sl on sl.INVOICE_NO = sh.SHPMNT_REF
                 inner join HELPDB.CLIENT ship on ship.CLIENT_NO = sh.SHIPPER_ID
                 inner join HELPDB.CLIENT cons on cons.CLIENT_NO = sh.CONSIGN_ID
                 inner join EXPORT.AIR_FRGHT_HDR hdr on hdr.INVOICE_REF = sh.SHPMNT_REF
@@ -85,7 +88,8 @@ namespace GetHouseData
                 hdr.FLIGHT_NUM_AWB_1,
                 sh.PCS_GRS,
                 hdr.HNDL_INFO_AWB_1,
-                hdr.HNDL_INFO_AWB_2
+                hdr.HNDL_INFO_AWB_2,
+                sl.MAWB_BL_NO
                 ";
 
             using (DB2Connection myconnection = new DB2Connection(ConStr))
@@ -109,7 +113,7 @@ namespace GetHouseData
                         Excel.Worksheet worksheet = workbook.Worksheets.Item[1];
                         //worksheet.Cells[5, 7].Value = rd.GetValue(1).ToString();
                         //Shipper Update
-                        worksheet.Range["D1"].Value = rd.GetValue(0).ToString();
+                        worksheet.Range["D1"].Value = rd.GetValue(22).ToString();
                         worksheet.Range["N1"].Value = rd.GetValue(0).ToString();
                         worksheet.Range["M51"].Value = rd.GetValue(0).ToString();
                         worksheet.Range["B3"].Value = rd.GetValue(1).ToString();
@@ -180,7 +184,11 @@ namespace GetHouseData
 
                         //richTextBox1.Text = richTextBox1.Text + descResult[0] +"///////" + descResult[1]+ "//////" + descResult[2];
 
-                         
+                        for (int i = descResult.Count; i <= 7; i++)
+                        {
+                            descResult.Add("");
+                        }
+
                         worksheet.Range["B28"].Value = descResult[0];
                         worksheet.Range["B29"].Value = descResult[1];
                         worksheet.Range["B30"].Value = descResult[2];
@@ -189,6 +197,8 @@ namespace GetHouseData
                         worksheet.Range["B33"].Value = descResult[5];
                         worksheet.Range["B34"].Value = descResult[6];
                         worksheet.Range["B35"].Value = descResult[7];
+
+                        
 
                         /*String remarks = rd.GetValue(22).ToString();
                         List<string> remarksResult = remarks.Split('!').ToList();
