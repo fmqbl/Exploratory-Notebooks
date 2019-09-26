@@ -126,7 +126,7 @@ class downloader:
         
         self.browser.get(self.url)
 
-        delay = 60 # seconds
+        delay = 40 # seconds
         try:
             myElem = WebDriverWait(self.browser, delay).until(EC.presence_of_element_located((By.ID, 'username')))
             self.logger.info("Page is ready!")
@@ -185,10 +185,12 @@ class downloader:
         self.logger.info("Consolidation function called")
 
         #clicking the consolidation div
+        #pdb.set_trace()
+        self.browser.find_element_by_tag_name('body').send_keys(Keys.CONTROL + Keys.HOME)
         self.wait_for_class_to_be_available(self.browser,self.consolidationDiv)
 
         #clicking the consolidation button
-
+        self.browser.find_element_by_tag_name('body').send_keys(Keys.CONTROL + Keys.HOME)
         #time.sleep(2)
         self.wait_for_class_to_be_available(self.browser,self.consolButton)
 
@@ -207,8 +209,8 @@ class downloader:
 
         #self.browser.find_element_by_xpath("//*[@id='flatGroup']/li[3]/div/div[4]/img")
         #tickButton.click()
-
         #click Search Button
+        time.sleep(3)
 
         self.wait_for_class_to_be_available(self.browser,self.searchButton)
 
@@ -300,17 +302,33 @@ class downloader:
                 
 
                 container_textBox = WebDriverWait(self.browser, 100).until(EC.presence_of_element_located((By.NAME, 'treContainorNumber')))
+                container_textBox.clear()
                 container_textBox.send_keys(self.containerNumber)
 
                 seal_textBox = WebDriverWait(self.browser, 100).until(EC.presence_of_element_located((By.NAME, 'trePlombNumber')))
                 seal_textBox.send_keys(self.sealNumber)
 
-                checkBoxItem = WebDriverWait(self.browser, 100).until(EC.presence_of_element_located((By.NAME, 'treIdSelected')))
-                self.browser.find_element_by_name('treIdSelected').click()
+                time.sleep(1)
+                containerType = self.browser.find_element_by_xpath("//select[@name='eqpId']")
+                all_options = containerType.find_elements_by_tag_name("option")
+                for option in all_options:
+                    if (option.get_attribute("value") == '6'):
+                        option.click()
+                time.sleep(2)
+                checkBoxItem = WebDriverWait(self.browser, 100).until(EC.element_to_be_clickable((By.NAME, 'treIdSelected')))
+                
+                checkBoxItem.click()
 
-                self.wait_for_class_to_be_available(self.browser,"//*[@id='rightPartButtonAction']/a[3]/img")
+                self.wait_for_class_to_be_available(self.browser,"//*[@id='buttConsoASIA_CNT1296893']/button[1]/img")
                 
                 print('Heavy')
+
+                '''time.sleep(1)
+                routerElement = self.browser.find_element_by_xpath("//select[@name='lneId']")
+                all_options = routerElement.find_elements_by_tag_name("option")
+                for option in all_options:
+                    if (option.get_attribute("value") == 'ASIA_PLN5068'):
+                        option.click()'''
 
 
         #4
