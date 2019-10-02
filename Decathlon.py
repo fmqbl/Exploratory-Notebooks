@@ -319,9 +319,11 @@ class downloader:
                 
                 checkBoxItem.click()
 
-                self.wait_for_class_to_be_available(self.browser,"//*[@id='buttConsoASIA_CNT1296893']/button[1]/img")
+                self.wait_for_class_to_be_available(self.browser,"//*[@title='button.addAs']")
                 
                 print('Heavy')
+
+                
 
                 '''time.sleep(1)
                 routerElement = self.browser.find_element_by_xpath("//select[@name='lneId']")
