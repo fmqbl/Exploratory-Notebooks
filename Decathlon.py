@@ -164,6 +164,19 @@ class downloader:
             if total_wait > 1: 
                 self.wait_for_class_to_be_available(browser,elementXpath, total_wait)
 
+    def wait_for_class(self,browser,elementXpath, total_wait=100):
+        #pdb.set_trace()
+        try:
+            element = WebDriverWait(browser, 15).until(EC.element_to_be_clickable((By.XPATH, elementXpath)))
+            return element
+        except Exception as e:
+            print("Waiting for element to be Clickable")
+            #print(e)
+            total_wait = total_wait - 1
+            time.sleep(1)
+            if total_wait > 1: 
+                self.wait_for_class_to_be_available(browser,elementXpath, total_wait)
+
     def wait_for_xpath_to_present(self,browser,elementXpath, total_wait=100):
         #pdb.set_trace()
         try:
@@ -285,7 +298,7 @@ class downloader:
 
             if (givenTotalPieces.strip() == selectedTotalPieces.strip() and givenTotalCtn.strip() == selectedTotalCtn.strip()):
                 
-                print('Final GG WP')
+                print('Checked With file and Site')
                 #Clicking Container
 
                 self.wait_for_class_to_be_available(self.browser,self.containerButton)
@@ -318,20 +331,54 @@ class downloader:
                 checkBoxItem = WebDriverWait(self.browser, 100).until(EC.element_to_be_clickable((By.NAME, 'treIdSelected')))
                 
                 checkBoxItem.click()
+                time.sleep(2)
 
-                self.wait_for_class_to_be_available(self.browser,"//*[@title='button.addAs']")
+                self.wait_for_class_to_be_available(self.browser,"//img[@alt='button.addAs']")
                 
-                print('Heavy')
+                print('Consolidation Done')
 
+                time.sleep(10)
                 
-
-                '''time.sleep(1)
-                routerElement = self.browser.find_element_by_xpath("//select[@name='lneId']")
+                #pdb.set_trace()
+                routerElement = self.wait_for_class(self.browser,"//select[@name='lneId']")
+                
                 all_options = routerElement.find_elements_by_tag_name("option")
                 for option in all_options:
-                    if (option.get_attribute("value") == 'ASIA_PLN5068'):
-                        option.click()'''
+                    if (option.get_attribute("value") == 'ASIA_PLN5052'):
+                        option.click()
+                
 
+                time.sleep(3)
+                checkBoxItem = WebDriverWait(self.browser, 100).until(EC.element_to_be_clickable((By.NAME, 'treIdSelected')))
+
+                time.sleep(4)
+
+                checkBoxItem.click()
+
+                #self.wait_for_class_to_be_available(self.browser,"//*[@id='rightPartButtonAction']/a[3]/img")
+
+                time.sleep(1)
+
+                self.wait_for_class_to_be_available(self.browser,"//*[@id='rightPartButtonAction']/a[3]/img")
+
+                print('Ended')
+
+                self.wait_for_class_to_be_available(self.browser,"//*[@id='menu_li_5']/a")
+
+                
+                self.wait_for_class_to_be_available(self.browser,"//*[@id='subMenu_li_2']")
+
+                
+
+                self.wait_for_class_to_be_available(self.browser,"//*[@id='rightPartButtonAction']/a[1]/img")
+
+                self.wait_for_class_to_be_available(self.browser,"//*[@id='transManagement_popupAddIntTransport_formCreateIntTransport']/div[4]/button/span/em")
+
+                #Creation of boat 
+
+                inRef = WebDriverWait(self.browser, 100).until(EC.presence_of_element_located((By.NAME, 'fluxRoutingInternational___ASIA_ERO2881505___13')))
+                inRef.clear()
+                #inRef.send_keys(self.containerNumber)
 
         #4
         #self.bar.next()
