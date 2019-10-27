@@ -26,6 +26,8 @@ class downloader:
     
     def __init__(self):
         
+
+        # Initialization of variables and global inputs
         self.logger = logging.getLogger('Cape System Log')
         self.logger.setLevel(logging.DEBUG)
         
@@ -39,6 +41,7 @@ class downloader:
         self.logger.propagate = False
         #self.bar = Bar('Processing', max=10)
 
+        # All the buttons to clicked on the cape system
         self.consolidationDiv = "//*[@id='menu_li_4']"
         self.consolButton = "//*[@id='actions']/li[3]/img"
         self.filterButton = "//*[@id='filters-action-full']"
@@ -56,6 +59,8 @@ class downloader:
         self.grossWeight = ""
         self.totalVolume = ""
 
+
+        # Xpaths from the website, globlay assigned
         #before selection datarow
         self.totalPiecesXPath = "//*[@id='globalDataLeft']/div/table/tbody/tr/td[3]/ul/li/label"
         self.totalCtnXPath = "//*[@id='globalDataLeft']/div/table/tbody/tr/td[4]/ul/li/label"
@@ -83,7 +88,7 @@ class downloader:
         #Variables
         self.orderNumbers = ''
 
-        # application setting
+        # application setting, below is the Asian link for cape system. IF that doesn't work. Contact with Cape or use Europe version
         
         self.url = "https://cape-asia.decathlon.net/capetm/index.jsp"
         
@@ -91,12 +96,14 @@ class downloader:
 
         self.logger.info("Setup Chrome function called")
 
-        # Contains all chrome settings
+        # Contains all chrome settings for the chrome driver
         self.logger.info("Setting-up Chrome")
         self.settings = webdriver.ChromeOptions()
         self.settings.add_argument("--incognito")
         self.settings.add_argument('--ignore-ssl-errors')
         self.settings.add_argument('--ignore-certificate-errors')
+
+        # Disabled the websecurity for the proxy to work without EXPD network as well.
         self.settings.add_argument('–-disable-web-security')
         self.settings.add_argument('–-allow-running-insecure-content')
         #self.settings.add_argument('--browser.download.folderList=2')
@@ -114,6 +121,7 @@ class downloader:
 
         try:
             #self.browser = webdriver.Chrome("D:\\DataScrapping\\ProjectBigSchedules\\chromedriver.exe")
+            # Add you chrome driver path below as shown above
             self.browser = webdriver.Chrome(chrome_options=self.settings, executable_path=r"D:\chromedriver.exe")
             self.browser.maximize_window()
             self.logger.info("Page setup complete will now go to the URL")
@@ -136,6 +144,8 @@ class downloader:
             self.logger.info("Loading took too much time! Exiting now")
             sys.exit(0)
 
+
+        # Added the status creadentials, later we need to map a system file to secure the code and follow the coding practices
         inputElement = self.browser.find_element_by_id("username")
         inputElement.send_keys('N.Sathishkumar@expeditors.com')
 
@@ -150,7 +160,7 @@ class downloader:
 
         #pdb.set_trace()
         self.asOfConsolidation()
-    #added comments
+    #Below function is to wait for the xpath in the website as system may take some time as per the connection you are using
     def wait_for_class_to_be_available(self,browser,elementXpath, total_wait=100):
         #pdb.set_trace()
         try:
