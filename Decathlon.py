@@ -160,7 +160,7 @@ class downloader:
 
         #pdb.set_trace()
         self.asOfConsolidation()
-    #Below function is to wait for the xpath in the website as system may take some time as per the connection you are using
+    #Below function is to wait for the xpath in the website as system may take some time as per the connection you are using. It waits for the element and click it when found in DOM
     def wait_for_class_to_be_available(self,browser,elementXpath, total_wait=100):
         #pdb.set_trace()
         try:
@@ -174,6 +174,8 @@ class downloader:
             if total_wait > 1: 
                 self.wait_for_class_to_be_available(browser,elementXpath, total_wait)
 
+
+    # Below function is same above but instead of clicking the element it returns the element which later on used by the code
     def wait_for_class(self,browser,elementXpath, total_wait=100):
         #pdb.set_trace()
         try:
@@ -187,6 +189,7 @@ class downloader:
             if total_wait > 1: 
                 self.wait_for_class_to_be_available(browser,elementXpath, total_wait)
 
+    #same as above but get the text of the element
     def wait_for_xpath_to_present(self,browser,elementXpath, total_wait=100):
         #pdb.set_trace()
         try:
@@ -201,7 +204,7 @@ class downloader:
                 self.wait_for_class_to_be_available(browser,elementXpath, total_wait)
 
 
-    
+    #To consolidate the order numbers in container
     def asOfConsolidation(self):
         
         #pdb.set_trace()
@@ -273,6 +276,7 @@ class downloader:
         print(type(givenTotalCtn))
         print(type(self.totalCtn))
 
+        # Matching if the input from file matches with the system of Cape
         if (givenTotalPieces.strip() == self.totalPieces.strip()) and (givenTotalCtn.strip() == self.totalCtn.strip()) and (givenNetWeight.strip() == self.netWeight.strip()) and (givenGrossWeight.strip() == self.grossWeight.strip()) and (givenTotalVolume.strip() == self.totalVolume.strip()):
             print('GG WP EZ PZ')
 
@@ -306,6 +310,7 @@ class downloader:
             selectedGrossWeight = self.wait_for_xpath_to_present(self.browser,self.selectedGrossWeight)
             selectedTotalVolume = self.wait_for_xpath_to_present(self.browser,self.selectedTotalVolume)
 
+            #After checking with file, create container
             if (givenTotalPieces.strip() == selectedTotalPieces.strip() and givenTotalCtn.strip() == selectedTotalCtn.strip()):
                 
                 print('Checked With file and Site')
@@ -315,7 +320,7 @@ class downloader:
                 #clicking create container button
 
                 self.wait_for_class_to_be_available(self.browser, self.createContainer)
-
+                #Selection of transport mode
                 elementFind = WebDriverWait(self.browser, 100).until(EC.presence_of_element_located((By.NAME, 'treTransportMode')))
                 element = self.browser.find_element_by_xpath("//select[@name='treTransportMode']")
                 all_options = element.find_elements_by_tag_name("option")
@@ -330,7 +335,8 @@ class downloader:
 
                 seal_textBox = WebDriverWait(self.browser, 100).until(EC.presence_of_element_located((By.NAME, 'trePlombNumber')))
                 seal_textBox.send_keys(self.sealNumber)
-
+                
+                #Selection of Container Size - E.g 6 == 40 HC
                 time.sleep(1)
                 containerType = self.browser.find_element_by_xpath("//select[@name='eqpId']")
                 all_options = containerType.find_elements_by_tag_name("option")
@@ -352,6 +358,7 @@ class downloader:
                 #pdb.set_trace()
                 routerElement = self.wait_for_class(self.browser,"//select[@name='lneId']")
                 
+                #Selection of router based on POL and POD, MAA to Barcelona == 'ASIA_PLN5052'
                 all_options = routerElement.find_elements_by_tag_name("option")
                 for option in all_options:
                     if (option.get_attribute("value") == 'ASIA_PLN5052'):
