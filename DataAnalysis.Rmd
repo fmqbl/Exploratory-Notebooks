@@ -1,0 +1,214 @@
+---
+title: "GeneData Analysis"
+output:
+  html_document: default
+  pdf_document: default
+---
+# Loading required libaraies
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("readxl")
+library(ggplot2)
+library(reshape2)
+library(dplyr)
+library(purrr)
+library(stats)
+library(caret)
+library(olsrr)
+library(corrplot)
+library(RColorBrewer)
+library(jtools)
+library(tidyr)
+```
+
+# Exploratory Data Analysis
+In this section we will explore the data set to summarize the main characteristics of the genes. We will look at different aspects including distribution and correlation of genes.
+
+## Time Series plot
+First, we would like to see how the genes behaves with respect to time. Is there any trend for gene values with respect to time.
+```{r}
+data <- read.csv("genedata.csv")
+colnames(data)[1]<-c('Time')  #column name change
+
+meltedData <- melt(data,id='Time')
+ggplot(data = meltedData, aes(x=Time, y=value)) + geom_line(aes(colour=variable)) +
+  ggtitle('Time Series Plot for all the genes')
+```
+
+## Distribution of genes
+Lets look at how the genes are distributed.
+```{r}
+data[,2:6] %>%
+  keep(is.numeric) %>%                     # Keep only numeric columns
+  gather() %>%                             # Convert to key-value pairs
+  ggplot(aes(value)) +                     # Plot the values
+    facet_wrap(~ key, scales = "free") +   # In separate panels
+    geom_density()+ggtitle('Distribution of Each Gene')
+```
+
+```{r}
+#library(Hmisc)
+summary(data)
+```
+
+## Scatter Plot
+```{r}
+pairs(data[,2:6], pch = 19)
+```
+
+## Correlation Plot
+We would see at the correlation plot for all the genes to check if these genes have significant correlation with time or other genes.
+```{r}
+corr <-cor(data)
+corrplot(corr, order="hclust",
+         col=brewer.pal(n=8, name="RdYlBu"))
+```
+
+# Dimensionality Reduction
+In this section we will reduce the dimensions of the data i.e from 5 dimensions to 2 dimensions. Here we have used single value decomposition as a method of choice. In R, prcomp uses single value decomposition for dimensionality reduction.
+
+```{r}
+data.pca<- prcomp(data[,2:6])
+summary(data.pca)
+
+red.data <- as.data.frame(data.pca$x[,1:2]) #Reduced features extraction
+red.data$Time = data$Time # Time column addition 
+colnames(red.data)<-c('f1','f2','Time')
+
+red.melt <- melt(red.data,id='Time')  #Display, reshape
+ggplot(data = red.melt, aes(x=Time, y=value)) + geom_line(aes(colour=variable)) +ggtitle('Plot with reduced features')
+```
+
+# Modelling
+
+In this section, we will do modeling using non linear regression. We will divide the data in two parts i.e train and test.
+```{r}
+set.seed(123)
+
+sampSize <- floor(0.80 * nrow(data)) #sampling
+train_ind <- sample(seq_len(nrow(data)), size = sampSize)
+train <- data[train_ind, ] # test train split
+test <- data[-train_ind, ]
+
+cat('Shape of train: ',dim(train))
+
+cat('\nShape of test: ',dim(test))
+```
+
+
+## Iterative approach
+
+```{r}
+polySelector <- function(train, test){
+  
+  trainMSE <- c()
+  testMSE <- c()
+  AIC.list <- c()
+  
+  for (i in 1:4){
+    model = lm(data=train,formula=x3~poly(x4,degree = i)+poly(x5,degree = i))
+    
+    AIC.list[i] <- AIC(model)
+    
+    trainPreds = predict(model,train)
+    testPreds = predict(model,test)
+    
+    trainMSE[i] <- mean( (train$x3-trainPreds)^2 )
+    testMSE[i] <- mean( (test$x3-testPreds)^2 )
+  }
+  
+  results <- data.frame(training=trainMSE,test=testMSE,ind=c(1:4))
+  
+  MSEPlot <- ggplot(results,aes(ind))+
+    geom_line(aes(y=trainMSE,colour='Training'))+
+    geom_line(aes(y=testMSE,colour='Test'))+
+    ggtitle('MSE of polynomial regression')+
+    xlab('Degree 1 to 4')+ylab('MSE')
+  print(MSEPlot)
+  
+  aicBic <- data.frame(AIC=AIC.list,ind=c(1:4))
+  ggplot(aicBic)+geom_line(aes(x=ind,y=AIC))+xlab('Degree')+ggtitle('AIC on Each Degree')
+}
+
+polySelector(train,test)
+```
+
+Here we can see that the polynomial degree of two gives the lowest MSE on test and trained data. Therefore we will select the degree of two and the model structure would be:
+
+$x_3 = w_0+a_1x_4+a2x_4^2+b_1x_5+b_2x_5^2+e$, where $e$ is gaussian noise.
+
+The AIC score is also lowest for model structure of degree 2 and therefore is the most good fit.
+
+## Residula normality test
+We need to see of the residuals are guassian and for that we do Q-Q plot and we can see from plot below the residuals are near guassian.
+```{r}
+model = lm(data=train, x3~poly(x4,degree = 2)+poly(x5,degree = 2))
+ols_plot_resid_qq(model)
+```
+
+## Parameter estimation
+lm() uses ordinary least sqaures for parameter estimation and hence the parameter estimated are: 
+
+$x_3 = 1.1390 -4.62x_4+0.28x_4^2+12.95x_5+1.28x_5^2$
+```{r}
+model = lm(data=train, x3~poly(x4,degree = 2)+poly(x5,degree = 2))
+model
+```
+
+## Covariance matrix 
+```{r}
+covMat <- vcov(model)
+
+rownames(covMat)<-c('wo','a1','a2','b1','b2')
+colnames(covMat) <- c('wo','a1','a2','b1','b2')
+print(covMat)
+
+pairs(covMat, pch = 19,main='Pairwise combination of parameters')
+
+plot_summs(model, scale = FALSE, plot.distributions = TRUE, inner_ci_level = .9,main='Paramter uncertainity')
+```
+
+## Prediction
+```{r}
+testpreds = as.data.frame( predict(model, newdata = test, interval = "confidence") )
+testpreds$ind= c(1:dim(testpreds)[1])  # by default 95 confidence
+
+ggplot(testpreds)+geom_line(aes(x=ind,y=fit,colour='predicted'))+
+  geom_line(aes(x=ind,y=upr,colour='conf'))+
+  geom_line(aes(x=ind,y=lwr,colour='conf'))+
+  geom_hline(yintercept = mean(testpreds$fit))
+
+```
+## Model Validation
+
+This section uses K-fold cross validation (with 10 iterations) technique for validating the model
+
+
+```{r}
+set.seed(123) 
+train.control <- trainControl(method = "cv", number = 10)
+
+model <- train(x3~poly(x4,degree = 2)+poly(x5,degree = 2), data = data, method = "lm",
+               trControl = train.control)
+# Summarize the results
+print(model)
+```
+
+RMSE of 0.049 was found by 10-fold cross-validation.
+
+## Approximate Baysian Computation
+```{r}
+library(rstanarm)
+#install.packages("bayestestR")
+library(latticeExtra)
+library(bayestestR)
+model <- stan_glm(x3~poly(x4,degree = 2)+poly(x5,degree = 2), data=data)
+describe_posterior(model)
+```
+
+### Marginal Distribution
+
+```{r}
+library(latticeExtra)
+marginal.plot(model)
+```
